@@ -1,0 +1,858 @@
+-- create database
+
+
+create database bank;
+use bank;
+– create 10 tables
+
+create table customer 
+( customerid int primary key ,name varchar(90), 
+address varchar(90) ,city varchar(90), state  varchar(90) , 
+postalcode int, phone bigint, email varchar(90), 
+dateofbirth date, gender varchar(90),occupation varchar(90));
+
+
+ 
+create table branch 
+( branchid int primary key, branchname varchar(90),location varchar(90), 
+managername varchar(90) ,contactnumber bigint, IFSCCode varchar(90));
+
+create table employee
+(employeeid  int primary key, name varchar(90), role varchar(90), salary int, 
+ hiredate date,email varchar(90), phone bigint,branchid int,  
+ foreign key (branchid) references branch(branchid));
+ 
+ 
+ 
+ create table account 
+ (AccountID int primary key,	AccountType  varchar(90), Balance int, OpenDate date ,
+ Status varchar(90), InterestRate varchar(90), Customerid int , branchid int,       
+ foreign key (Customerid) references customer (customerid),-- select ballance ,count(*) from account group by  accounttype;
+ foreign key (branchid) references branch (branchid));
+ 
+ 
+ 
+ create table transaction 
+ (tarnsaction int  primary key,date date,amount int, type varchar(90) , description  varchar(900),mode varchar(90),status varchar(90), accountid int,
+ foreign key (accountid) references account(accountId)); 
+
+create table loan 
+( loanid int primary key, loantype varchar(90), amount int,interestrate int , startdate date , 
+enddate date ,status varchar(90), customerid int ,branchid int,
+foreign key  (customerid) references customer (customerid),
+foreign key (branchid) references branch (branchid));
+
+
+
+create table payment
+(paymentid int primary key, date date, amount int, mode varchar(90), status varchar(90), 
+referencenumber int , loanid int, customerid int,
+foreign key (loanid) references loan(loanid),
+foreign key (customerid) references customer (customerid));
+
+create table card
+(cardid int, cardnumber int, cardtype varchar(90), expirydate date, cvv varchar(90), issuedate date, status varchar(90),
+accountid int, 
+foreign key (accountid) references account(accountid));
+
+create table login
+(loginid int , username varchar(90), password varchar(90), lastlogin varchar(90), securityquestion text, security text,
+customerid int,
+foreign key (customerid) references customer(customerid));
+
+create table audit_log 
+(logid int ,action varchar(90), timestamp int, ipaddress varchar(90), deviceinfo varchar(90), 
+employeeid int,
+foreign key (employeeid ) references employee(employeeid));
+ 
+ alter table card add  primary key (cardid);
+ alter table login add primary key (loginid);
+ alter table audit_log add  primary key (logid);
+
+– – describing the table
+
+Desc table customer;
+
+Desc table branch ;
+
+Desc table employee;
+
+Desc table account ;
+
+Desc table transaction;
+
+Desc table payment ;
+
+Desc card;
+
+Desc login;
+
+Desc loan;
+
+Desc audit_log;
+-- Insert 10 tables values
+
+-- select from table_name
+
+select * from customer;
+
+-- insert values
+
+-- INSERTING DATA INTO THE TABLE CUSTOMER
+INSERT INTO customer VALUES
+(1,'Amit Sharma','MG Road','Bangalore','Karnataka',560001,9876543001,'amit1@gmail.com','1995-01-10','Male','Engineer'),
+(2,'Riya Patel','BTM','Bangalore','Karnataka',560076,9876543002,'riya2@gmail.com','1996-02-12','Female','Teacher'),
+(3,'Rahul Kumar','Ameerpet','Hyderabad','Telangana',500016,9876543003,'rahul3@gmail.com','1994-03-14','Male','Doctor'),
+(4,'Sneha Reddy','Banjara Hills','Hyderabad','Telangana',500034,9876543004,'sneha4@gmail.com','1997-04-11','Female','Student'),
+(5,'Vikram Singh','Andheri','Mumbai','Maharashtra',400053,9876543005,'vikram5@gmail.com','1993-05-19','Male','Business'),
+(6,'Neha Sharma','Dwarka','Delhi','Delhi',110045,9876543006,'neha6@gmail.com','1998-06-18','Female','Engineer'),
+(7,'Arjun Das','Salt Lake','Kolkata','West Bengal',700091,9876543007,'arjun7@gmail.com','1992-07-22','Male','Banker'),
+(8,'Priya Nair','Kakkanad','Kochi','Kerala',682030,9876543008,'priya8@gmail.com','1996-08-25','Female','Designer'),
+(9,'Kiran Kumar','Indiranagar','Bangalore','Karnataka',560038,9876543009,'kiran9@gmail.com','1995-09-15','Male','Developer'),
+(10,'Pooja Verma','Noida','Noida','UP',201301,9876543010,'pooja10@gmail.com','1999-10-19','Female','Student'),
+(11,'Suresh Patel','Navrangpura','Ahmedabad','Gujarat',380009,9876543011,'suresh11@gmail.com','1991-11-12','Male','Business'),
+(12,'Anita Singh','Civil Lines','Allahabad','UP',211001,9876543012,'anita12@gmail.com','1994-12-02','Female','Teacher'),
+(13,'Rohit Sharma','Malad','Mumbai','Maharashtra',400064,9876543013,'rohit13@gmail.com','1995-01-05','Male','Engineer'),
+(14,'Kavya Reddy','Madhapur','Hyderabad','Telangana',500081,9876543014,'kavya14@gmail.com','1997-02-07','Female','Developer'),
+(15,'Deepak Kumar','Rajajinagar','Bangalore','Karnataka',560010,9876543015,'deepak15@gmail.com','1993-03-10','Male','Clerk'),
+(16,'Meena Das','Howrah','Kolkata','West Bengal',711101,9876543016,'meena16@gmail.com','1996-04-09','Female','Nurse'),
+(17,'Sunil Gupta','Karol Bagh','Delhi','Delhi',110005,9876543017,'sunil17@gmail.com','1990-05-16','Male','Business'),
+(18,'Pallavi Jain','Vijay Nagar','Indore','MP',452010,9876543018,'pallavi18@gmail.com','1998-06-21','Female','Student'),
+(19,'Naveen Kumar','Whitefield','Bangalore','Karnataka',560066,9876543019,'naveen19@gmail.com','1992-07-30','Male','Engineer'),
+(20,'Shreya Sen','Park Street','Kolkata','West Bengal',700016,9876543020,'shreya20@gmail.com','1997-08-12','Female','Designer'),
+(21,'Ajay Singh','Hazratganj','Lucknow','UP',226001,9876543021,'ajay21@gmail.com','1994-09-14','Male','Police'),
+(22,'Divya Nair','Aluva','Kochi','Kerala',683101,9876543022,'divya22@gmail.com','1995-10-18','Female','Teacher'),
+(23,'Gaurav Patel','Maninagar','Ahmedabad','Gujarat',380008,9876543023,'gaurav23@gmail.com','1993-11-23','Male','Business'),
+(24,'Anjali Sharma','Rohini','Delhi','Delhi',110085,9876543024,'anjali24@gmail.com','1998-12-25','Female','Student'),
+(25,'Prakash Rao','Gachibowli','Hyderabad','Telangana',500032,9876543025,'prakash25@gmail.com','1991-01-17','Male','Engineer'),
+(26,'Lakshmi Iyer','Adyar','Chennai','Tamil Nadu',600020,9876543026,'lakshmi26@gmail.com','1996-02-20','Female','Professor'),
+(27,'Manish Yadav','Kalyan','Mumbai','Maharashtra',421301,9876543027,'manish27@gmail.com','1992-03-22','Male','Driver'),
+(28,'Sonia Kapoor','Janakpuri','Delhi','Delhi',110058,9876543028,'sonia28@gmail.com','1997-04-27','Female','HR'),
+(29,'Vivek Mishra','Alambagh','Lucknow','UP',226005,9876543029,'vivek29@gmail.com','1993-05-30','Male','Lawyer'),
+(30,'Ritu Agarwal','Ballygunge','Kolkata','West Bengal',700019,9876543030,'ritu30@gmail.com','1998-06-15','Female','Accountant');
+
+--  INSERTING VALUES INTO TABLE BRANCH
+INSERT INTO branch VALUES
+(101,'Main Branch','Bangalore','Ravi Kumar',9876500001,'SBIN0001'),
+(102,'City Branch','Hyderabad','Suresh Reddy',9876500002,'SBIN0002'),
+(103,'Central Branch','Chennai','Anita Sharma',9876500003,'SBIN0003'),
+(104,'Market Branch','Mumbai','Rahul Singh',9876500004,'SBIN0004'),
+(105,'North Branch','Delhi','Kiran Patel',9876500005,'SBIN0005'),
+(106,'South Branch','Bangalore','Meena Das',9876500006,'SBIN0006'),
+(107,'West Branch','Pune','Arjun Nair',9876500007,'SBIN0007'),
+(108,'East Branch','Kolkata','Priya Sen',9876500008,'SBIN0008'),
+(109,'Lake Branch','Mysore','Sunil Kumar',9876500009,'SBIN0009'),
+(110,'Hill Branch','Shimla','Neha Kapoor',9876500010,'SBIN0010'),
+(111,'Airport Branch','Delhi','Vikram Shah',9876500011,'SBIN0011'),
+(112,'Industrial Branch','Surat','Deepak Jain',9876500012,'SBIN0012'),
+(113,'Tech Park Branch','Hyderabad','Rohit Verma',9876500013,'SBIN0013'),
+(114,'Metro Branch','Chennai','Pooja Gupta',9876500014,'SBIN0014'),
+(115,'IT Hub Branch','Bangalore','Kavya Reddy',9876500015,'SBIN0015'),
+(116,'Station Branch','Lucknow','Manish Yadav',9876500016,'SBIN0016'),
+(117,'River Branch','Patna','Anil Kumar',9876500017,'SBIN0017'),
+(118,'Park Branch','Jaipur','Sneha Agarwal',9876500018,'SBIN0018'),
+(119,'Temple Branch','Tirupati','Ramesh Rao',9876500019,'SBIN0019'),
+(120,'College Branch','Coimbatore','Divya Nair',9876500020,'SBIN0020'),
+(121,'Market Road Branch','Nagpur','Gaurav Mishra',9876500021,'SBIN0021'),
+(122,'Ring Road Branch','Indore','Shreya Sen',9876500022,'SBIN0022'),
+(123,'Garden Branch','Bhopal','Ajay Singh',9876500023,'SBIN0023'),
+(124,'Port Branch','Visakhapatnam','Lakshmi Iyer',9876500024,'SBIN0024'),
+(125,'Bus Stand Branch','Vijayawada','Prakash Rao',9876500025,'SBIN0025'),
+(126,'Highway Branch','Trichy','Sanjay Gupta',9876500026,'SBIN0026'),
+(127,'Tower Branch','Noida','Ritu Sharma',9876500027,'SBIN0027'),
+(128,'Lake View Branch','Udaipur','Amit Patel',9876500028,'SBIN0028'),
+(129,'Mall Branch','Gurgaon','Sonia Kapoor',9876500029,'SBIN0029'),
+(130,'Town Branch','Warangal','Naveen Kumar',9876500030,'SBIN0030');
+
+-- INSERTING VALUSE INTO TABLE EMPLOYEE
+INSERT INTO employee VALUES
+(201,'Ravi Kumar','Manager',60000,'2020-01-10','ravi@bank.com',9000000001,101),
+(202,'Sita Sharma','Clerk',30000,'2021-02-11','sita@bank.com',9000000002,102),
+(203,'Anil Reddy','Cashier',32000,'2019-03-15','anil@bank.com',9000000003,103),
+(204,'Deepa Singh','Clerk',31000,'2022-04-12','deepa@bank.com',9000000004,104),
+(205,'Manoj Patel','Manager',65000,'2018-05-18','manoj@bank.com',9000000005,105),
+(206,'Neha Gupta','HR',45000,'2021-06-20','neha@bank.com',9000000006,106),
+(207,'Arjun Das','Cashier',33000,'2020-07-14','arjun@bank.com',9000000007,107),
+(208,'Priya Nair','Clerk',30000,'2022-08-22','priya@bank.com',9000000008,108),
+(209,'Kiran Kumar','Manager',62000,'2019-09-30','kiran@bank.com',9000000009,109),
+(210,'Pooja Verma','Clerk',31000,'2023-01-05','pooja@bank.com',9000000010,110),
+(211,'Suresh Yadav','Cashier',34000,'2020-02-18','suresh@bank.com',9000000011,111),
+(212,'Anita Sharma','HR',46000,'2021-03-25','anita@bank.com',9000000012,112),
+(213,'Rohit Singh','Clerk',32000,'2019-04-28','rohit@bank.com',9000000013,113),
+(214,'Kavya Reddy','Cashier',33000,'2022-05-15','kavya@bank.com',9000000014,114),
+(215,'Deepak Kumar','Manager',64000,'2018-06-10','deepak@bank.com',9000000015,115),
+(216,'Meena Das','Clerk',30000,'2021-07-19','meena@bank.com',9000000016,116),
+(217,'Sunil Gupta','Cashier',35000,'2020-08-23','sunil@bank.com',9000000017,117),
+(218,'Pallavi Jain','Clerk',31000,'2022-09-17','pallavi@bank.com',9000000018,118),
+(219,'Naveen Kumar','Manager',63000,'2019-10-11','naveen@bank.com',9000000019,119),
+(220,'Shreya Sen','Clerk',30000,'2023-01-12','shreya@bank.com',9000000020,120),
+(221,'Ajay Singh','Cashier',34000,'2020-02-14','ajay@bank.com',9000000021,121),
+(222,'Divya Nair','HR',47000,'2021-03-21','divya@bank.com',9000000022,122),
+(223,'Gaurav Patel','Clerk',32000,'2019-04-16','gaurav@bank.com',9000000023,123),
+(224,'Anjali Sharma','Cashier',33000,'2022-05-20','anjali@bank.com',9000000024,124),
+(225,'Prakash Rao','Manager',66000,'2018-06-25','prakash@bank.com',9000000025,125),
+(226,'Lakshmi Iyer','Clerk',31000,'2021-07-30','lakshmi@bank.com',9000000026,126),
+(227,'Manish Yadav','Cashier',35000,'2020-08-05','manish@bank.com',9000000027,127),
+(228,'Sonia Kapoor','Clerk',30000,'2022-09-09','sonia@bank.com',9000000028,128),
+(229,'Vivek Mishra','Manager',64000,'2019-10-13','vivek@bank.com',9000000029,129),
+(230,'Ritu Agarwal','Clerk',32000,'2023-01-18','ritu@bank.com',9000000030,130);
+
+-- INSERTING RECORDS INTO TABLE ACCOUNT
+insert into account values
+(301,'Savings',50000,'2023-01-01','Active','4%',1,101),
+(302,'Current',60000,'2023-01-02','Active','0%',2,102),
+(303,'Savings',45000,'2023-01-03','Active','4%',3,103),
+(304,'Savings',30000,'2023-01-04','Active','4%',4,104),
+(305,'Current',70000,'2023-01-05','Active','0%',5,105),
+(306,'Savings',20000,'2023-01-06','Active','4%',6,106),
+(307,'Savings',55000,'2023-01-07','Active','4%',7,107),
+(308,'Current',80000,'2023-01-08','Active','0%',8,108),
+(309,'Savings',15000,'2023-01-09','Active','4%',9,109),
+(310,'Savings',25000,'2023-01-10','Active','4%',10,110),
+(311,'Current',90000,'2023-01-11','Active','0%',11,111),
+(312,'Savings',42000,'2023-01-12','Active','4%',12,112),
+(313,'Savings',33000,'2023-01-13','Active','4%',13,113),
+(314,'Current',76000,'2023-01-14','Active','0%',14,114),
+(315,'Savings',22000,'2023-01-15','Active','4%',15,115),
+(316,'Savings',41000,'2023-01-16','Active','4%',16,116),
+(317,'Current',68000,'2023-01-17','Active','0%',17,117),
+(318,'Savings',37000,'2023-01-18','Active','4%',18,118),
+(319,'Savings',29000,'2023-01-19','Active','4%',19,119),
+(320,'Current',82000,'2023-01-20','Active','0%',20,120),
+(321,'Savings',34000,'2023-01-21','Active','4%',21,121),
+(322,'Savings',27000,'2023-01-22','Active','4%',22,122),
+(323,'Current',73000,'2023-01-23','Active','0%',23,123),
+(324,'Savings',36000,'2023-01-24','Active','4%',24,124),
+(325,'Savings',21000,'2023-01-25','Active','4%',25,125),
+(326,'Current',79000,'2023-01-26','Active','0%',26,126),
+(327,'Savings',38000,'2023-01-27','Active','4%',27,127),
+(328,'Savings',26000,'2023-01-28','Active','4%',28,128),
+(329,'Current',91000,'2023-01-29','Active','0%',29,129),
+(330,'Savings',47000,'2023-01-30','Active','4%',30,130);
+
+-- INSERTING RECORDS INTO TABLE TRANSSACTION
+ insert into transaction values
+(401,'2024-01-01',5000,'Deposit','Cash deposit','Cash','Completed',301),
+(402,'2024-01-02',2000,'Withdraw','ATM withdrawal','ATM','Completed',302),
+(403,'2024-01-03',3000,'Transfer','Online transfer','Online','Completed',303),
+(404,'2024-01-04',1500,'Deposit','Cash deposit','Cash','Completed',304),
+(405,'2024-01-05',2500,'Withdraw','ATM withdrawal','ATM','Completed',305),
+(406,'2024-01-06',3200,'Transfer','Online transfer','Online','Completed',306),
+(407,'2024-01-07',4200,'Deposit','Cash deposit','Cash','Completed',307),
+(408,'2024-01-08',1800,'Withdraw','ATM withdrawal','ATM','Completed',308),
+(409,'2024-01-09',2100,'Transfer','Online transfer','Online','Completed',309),
+(410,'2024-01-10',3600,'Deposit','Cash deposit','Cash','Completed',310),
+(411,'2024-01-11',2400,'Withdraw','ATM withdrawal','ATM','Completed',311),
+(412,'2024-01-12',2700,'Transfer','Online transfer','Online','Completed',312),
+(413,'2024-01-13',3100,'Deposit','Cash deposit','Cash','Completed',313),
+(414,'2024-01-14',2200,'Withdraw','ATM withdrawal','ATM','Completed',314),
+(415,'2024-01-15',3500,'Transfer','Online transfer','Online','Completed',315),
+(416,'2024-01-16',2600,'Deposit','Cash deposit','Cash','Completed',316),
+(417,'2024-01-17',1700,'Withdraw','ATM withdrawal','ATM','Completed',317),
+(418,'2024-01-18',3900,'Transfer','Online transfer','Online','Completed',318),
+(419,'2024-01-19',2800,'Deposit','Cash deposit','Cash','Completed',319),
+(420,'2024-01-20',3300,'Withdraw','ATM withdrawal','ATM','Completed',320),
+(421,'2024-01-21',2100,'Transfer','Online transfer','Online','Completed',321),
+(422,'2024-01-22',2400,'Deposit','Cash deposit','Cash','Completed',322),
+(423,'2024-01-23',2600,'Withdraw','ATM withdrawal','ATM','Completed',323),
+(424,'2024-01-24',4100,'Transfer','Online transfer','Online','Completed',324),
+(425,'2024-01-25',2900,'Deposit','Cash deposit','Cash','Completed',325),
+(426,'2024-01-26',3100,'Withdraw','ATM withdrawal','ATM','Completed',326),
+(427,'2024-01-27',2000,'Transfer','Online transfer','Online','Completed',327),
+(428,'2024-01-28',3400,'Deposit','Cash deposit','Cash','Completed',328),
+(429,'2024-01-29',3700,'Withdraw','ATM withdrawal','ATM','Completed',329),
+(430,'2024-01-30',4200,'Transfer','Online transfer','Online','Completed',330);
+
+-- INSERTING RECORDS INTO TABLE LOAN
+insert into loan values
+(501,'Home Loan',500000,8,'2023-01-01','2033-01-01','Active',1,101),
+(502,'Car Loan',300000,9,'2023-02-01','2028-02-01','Active',2,102),
+(503,'Education Loan',200000,7,'2023-03-01','2030-03-01','Active',3,103),
+(504,'Personal Loan',150000,10,'2023-04-01','2027-04-01','Active',4,104),
+(505,'Home Loan',600000,8,'2023-05-01','2035-05-01','Active',5,105),
+(506,'Car Loan',250000,9,'2023-06-01','2029-06-01','Active',6,106),
+(507,'Education Loan',220000,7,'2023-07-01','2032-07-01','Active',7,107),
+(508,'Personal Loan',180000,10,'2023-08-01','2027-08-01','Active',8,108),
+(509,'Home Loan',550000,8,'2023-09-01','2034-09-01','Active',9,109),
+(510,'Car Loan',320000,9,'2023-10-01','2029-10-01','Active',10,110),
+(511,'Education Loan',210000,7,'2023-11-01','2031-11-01','Active',11,111),
+(512,'Personal Loan',160000,10,'2023-12-01','2028-12-01','Active',12,112),
+(513,'Home Loan',580000,8,'2023-01-15','2036-01-15','Active',13,113),
+(514,'Car Loan',340000,9,'2023-02-15','2029-02-15','Active',14,114),
+(515,'Education Loan',230000,7,'2023-03-15','2032-03-15','Active',15,115),
+(516,'Personal Loan',140000,10,'2023-04-15','2027-04-15','Active',16,116),
+(517,'Home Loan',620000,8,'2023-05-15','2037-05-15','Active',17,117),
+(518,'Car Loan',310000,9,'2023-06-15','2030-06-15','Active',18,118),
+(519,'Education Loan',240000,7,'2023-07-15','2033-07-15','Active',19,119),
+(520,'Personal Loan',170000,10,'2023-08-15','2028-08-15','Active',20,120),
+(521,'Home Loan',590000,8,'2023-09-15','2035-09-15','Active',21,121),
+(522,'Car Loan',330000,9,'2023-10-15','2030-10-15','Active',22,122),
+(523,'Education Loan',210000,7,'2023-11-15','2032-11-15','Active',23,123),
+(524,'Personal Loan',150000,10,'2023-12-15','2027-12-15','Active',24,124),
+(525,'Home Loan',640000,8,'2023-01-20','2038-01-20','Active',25,125),
+(526,'Car Loan',360000,9,'2023-02-20','2031-02-20','Active',26,126),
+(527,'Education Loan',250000,7,'2023-03-20','2034-03-20','Active',27,127),
+(528,'Personal Loan',180000,10,'2023-04-20','2028-04-20','Active',28,128),
+(529,'Home Loan',610000,8,'2023-05-20','2036-05-20','Active',29,129),
+(530,'Car Loan',350000,9,'2023-06-20','2031-06-20','Active',30,130);
+
+-- INSERTING RECORDS INTO TABLE PAYMENT
+insert into payment values
+(601,'2024-02-01',10000,'Online','Completed',1001,501,1),
+(602,'2024-02-02',12000,'UPI','Completed',1002,502,2),
+(603,'2024-02-03',9000,'Cash','Completed',1003,503,3),
+(604,'2024-02-04',11000,'Online','Completed',1004,504,4),
+(605,'2024-02-05',8000,'UPI','Completed',1005,505,5),
+(606,'2024-02-06',9500,'Cash','Completed',1006,506,6),
+(607,'2024-02-07',10500,'Online','Completed',1007,507,7),
+(608,'2024-02-08',9800,'UPI','Completed',1008,508,8),
+(609,'2024-02-09',11500,'Cash','Completed',1009,509,9),
+(610,'2024-02-10',12000,'Online','Completed',1010,510,10),
+(611,'2024-02-11',9000,'UPI','Completed',1011,511,11),
+(612,'2024-02-12',8500,'Cash','Completed',1012,512,12),
+(613,'2024-02-13',10000,'Online','Completed',1013,513,13),
+(614,'2024-02-14',11000,'UPI','Completed',1014,514,14),
+(615,'2024-02-15',9500,'Cash','Completed',1015,515,15),
+(616,'2024-02-16',9800,'Online','Completed',1016,516,16),
+(617,'2024-02-17',12000,'UPI','Completed',1017,517,17),
+(618,'2024-02-18',8700,'Cash','Completed',1018,518,18),
+(619,'2024-02-19',9200,'Online','Completed',1019,519,19),
+(620,'2024-02-20',10300,'UPI','Completed',1020,520,20),
+(621,'2024-02-21',11500,'Cash','Completed',1021,521,21),
+(622,'2024-02-22',10800,'Online','Completed',1022,522,22),
+(623,'2024-02-23',9600,'UPI','Completed',1023,523,23),
+(624,'2024-02-24',8900,'Cash','Completed',1024,524,24),
+(625,'2024-02-25',11200,'Online','Completed',1025,525,25),
+(626,'2024-02-26',9700,'UPI','Completed',1026,526,26),
+(627,'2024-02-27',10400,'Cash','Completed',1027,527,27),
+(628,'2024-02-28',9900,'Online','Completed',1028,528,28),
+(629,'2024-02-29',11100,'UPI','Completed',1029,529,29),
+(630,'2024-03-01',9500,'Cash','Completed',1030,530,30);
+
+-- INSERTING RECORDS INTO TABLE CARD
+insert into card values
+(701,12345001,'Debit','2028-01-01','123','2023-01-01','Active',301),
+(702,12345002,'Credit','2028-02-01','234','2023-02-01','Active',302),
+(703,12345003,'Debit','2028-03-01','345','2023-03-01','Active',303),
+(704,12345004,'Credit','2028-04-01','456','2023-04-01','Active',304),
+(705,12345005,'Debit','2028-05-01','567','2023-05-01','Active',305),
+(706,12345006,'Credit','2028-06-01','678','2023-06-01','Active',306),
+(707,12345007,'Debit','2028-07-01','789','2023-07-01','Active',307),
+(708,12345008,'Credit','2028-08-01','321','2023-08-01','Active',308),
+(709,12345009,'Debit','2028-09-01','432','2023-09-01','Active',309),
+(710,12345010,'Credit','2028-10-01','543','2023-10-01','Active',310),
+(711,12345011,'Debit','2028-11-01','654','2023-11-01','Active',311),
+(712,12345012,'Credit','2028-12-01','765','2023-12-01','Active',312),
+(713,12345013,'Debit','2029-01-01','876','2024-01-01','Active',313),
+(714,12345014,'Credit','2029-02-01','987','2024-02-01','Active',314),
+(715,12345015,'Debit','2029-03-01','147','2024-03-01','Active',315),
+(716,12345016,'Credit','2029-04-01','258','2024-04-01','Active',316),
+(717,12345017,'Debit','2029-05-01','369','2024-05-01','Active',317),
+(718,12345018,'Credit','2029-06-01','159','2024-06-01','Active',318),
+(719,12345019,'Debit','2029-07-01','753','2024-07-01','Active',319),
+(720,12345020,'Credit','2029-08-01','852','2024-08-01','Active',320),
+(721,12345021,'Debit','2029-09-01','951','2024-09-01','Active',321),
+(722,12345022,'Credit','2029-10-01','159','2024-10-01','Active',322),
+(723,12345023,'Debit','2029-11-01','357','2024-11-01','Active',323),
+(724,12345024,'Credit','2029-12-01','258','2024-12-01','Active',324),
+(725,12345025,'Debit','2030-01-01','147','2025-01-01','Active',325),
+(726,12345026,'Credit','2030-02-01','369','2025-02-01','Active',326),
+(727,12345027,'Debit','2030-03-01','789','2025-03-01','Active',327),
+(728,12345028,'Credit','2030-04-01','456','2025-04-01','Active',328),
+(729,12345029,'Debit','2030-05-01','321','2025-05-01','Active',329),
+(730,12345030,'Credit','2030-06-01','654','2025-06-01','Active',330);
+
+-- INSERTING RECORDS INTO TABLE LOGIN
+insert into login values
+(801,'user1','pass1','2024-01-01','What is your pet name?','Tom',1),
+(802,'user2','pass2','2024-01-02','What is your pet name?','Tom',2),
+(803,'user3','pass3','2024-01-03','What is your pet name?','Tom',3),
+(804,'user4','pass4','2024-01-04','What is your pet name?','Tom',4),
+(805,'user5','pass5','2024-01-05','What is your pet name?','Tom',5),
+(806,'user6','pass6','2024-01-06','What is your favorite color?','Blue',6),
+(807,'user7','pass7','2024-01-07','What is your favorite color?','Blue',7),
+(808,'user8','pass8','2024-01-08','What is your favorite color?','Blue',8),
+(809,'user9','pass9','2024-01-09','What is your favorite color?','Blue',9),
+(810,'user10','pass10','2024-01-10','What is your favorite color?','Blue',10),
+(811,'user11','pass11','2024-01-11','What is your birth city?','Delhi',11),
+(812,'user12','pass12','2024-01-12','What is your birth city?','Delhi',12),
+(813,'user13','pass13','2024-01-13','What is your birth city?','Delhi',13),
+(814,'user14','pass14','2024-01-14','What is your birth city?','Delhi',14),
+(815,'user15','pass15','2024-01-15','What is your birth city?','Delhi',15),
+(816,'user16','pass16','2024-01-16','What is your school name?','ABC School',16),
+(817,'user17','pass17','2024-01-17','What is your school name?','ABC School',17),
+(818,'user18','pass18','2024-01-18','What is your school name?','ABC School',18),
+(819,'user19','pass19','2024-01-19','What is your school name?','ABC School',19),
+(820,'user20','pass20','2024-01-20','What is your school name?','ABC School',20),
+(821,'user21','pass21','2024-01-21','What is your favorite food?','Biryani',21),
+(822,'user22','pass22','2024-01-22','What is your favorite food?','Biryani',22),
+(823,'user23','pass23','2024-01-23','What is your favorite food?','Biryani',23),
+(824,'user24','pass24','2024-01-24','What is your favorite food?','Biryani',24),
+(825,'user25','pass25','2024-01-25','What is your favorite food?','Biryani',25),
+(826,'user26','pass26','2024-01-26','What is your favorite movie?','RRR',26),
+(827,'user27','pass27','2024-01-27','What is your favorite movie?','RRR',27),
+(828,'user28','pass28','2024-01-28','What is your favorite movie?','RRR',28),
+(829,'user29','pass29','2024-01-29','What is your favorite movie?','RRR',29),
+(830,'user30','pass30','2024-01-30','What is your favorite movie?','RRR',30);
+
+-- INSERTING RECORDS INTO TABLE AUDIT_LOG
+
+
+insert into audit_log values
+(901,'Login',1700000001,'192.168.1.1','Laptop',201),
+(902,'Logout',1700000002,'192.168.1.2','Desktop',202),
+(903,'Account Creation',1700000003,'192.168.1.3','Office PC',203),
+(904,'Loan Approval',1700000004,'192.168.1.4','Laptop',204),
+(905,'Password Change',1700000005,'192.168.1.5','Mobile',205),
+(906,'Transaction Approval',1700000006,'192.168.1.6','Desktop',206),
+(907,'Login',1700000007,'192.168.1.7','Laptop',207),
+(908,'Logout',1700000008,'192.168.1.8','Office PC',208),
+(909,'Account Update',1700000009,'192.168.1.9','Desktop',209),
+(910,'Loan Update',1700000010,'192.168.1.10','Laptop',210),
+(911,'Login',1700000011,'192.168.1.11','Mobile',211),
+(912,'Logout',1700000012,'192.168.1.12','Desktop',212),
+(913,'Transaction Approval',1700000013,'192.168.1.13','Laptop',213),
+(914,'Account Creation',1700000014,'192.168.1.14','Office PC',214),
+(915,'Password Reset',1700000015,'192.168.1.15','Mobile',215),
+(916,'Login',1700000016,'192.168.1.16','Laptop',216),
+(917,'Logout',1700000017,'192.168.1.17','Desktop',217),
+(918,'Account Update',1700000018,'192.168.1.18','Office PC',218),
+(919,'Loan Approval',1700000019,'192.168.1.19','Laptop',219),
+(920,'Transaction Update',1700000020,'192.168.1.20','Desktop',220),
+(921,'Login',1700000021,'192.168.1.21','Mobile',221),
+(922,'Logout',1700000022,'192.168.1.22','Laptop',222),
+(923,'Account Creation',1700000023,'192.168.1.23','Office PC',223),
+(924,'Loan Update',1700000024,'192.168.1.24','Desktop',224),
+(925,'Password Change',1700000025,'192.168.1.25','Mobile',225),
+(926,'Login',1700000026,'192.168.1.26','Laptop',226),
+(927,'Logout',1700000027,'192.168.1.27','Desktop',227),
+(928,'Transaction Approval',1700000028,'192.168.1.28','Office PC',228),
+(929,'Account Update',1700000029,'192.168.1.29','Laptop',229),
+(930,'Loan Approval',1700000030,'192.168.1.30','Desktop',230);
+
+-- show the  table 
+
+show create table customer;
+
+
+-- alter drop foregin key 
+
+alter table customer
+drop foreign key  customer_ibfk_2;
+
+-- alter drop index 
+
+alter table customer
+drop index customer_name;
+
+
+
+—-UPDATING THE TABLE CUSTOMER
+UPDATE customer
+SET address = 'Brigade Road', city = 'Bangalore'
+WHERE customerid = 1;
+—-UPDATING THE TABLE CUSTOMER
+UPDATE customer
+SET phone = 9876500005
+WHERE customerid = 5;
+—-UPDATING THE TABLE CUSTOMER
+UPDATE customer
+SET occupation = 'Software Engineer'
+WHERE customerid = 10;
+
+
+—-UPDATING THE TABLE BRANCH
+UPDATE branch
+SET managername = 'Rajesh Kumar'
+WHERE branchid = 101;
+—-UPDATING THE TABLE BRANCH
+UPDATE branch
+SET contactnumber = 9876511110
+WHERE branchid = 110;
+—-UPDATING THE TABLE BRANCH
+UPDATE branch
+SET location = 'Bangalore City', managername = 'Ananya Reddy'
+WHERE branchid = 115;
+—-UPDATING THE TABLE EMPLOYEE
+UPDATE employee
+SET salary = 35000
+WHERE employeeid = 202;
+—-UPDATING THE TABLE EMPLOYEE
+UPDATE employee
+SET role = 'Senior Clerk'
+WHERE employeeid = 208;
+—-UPDATING THE TABLE EMPLOYEE
+UPDATE employee
+SET phone = 9000011115, email = 'deepak.kumar@bank.com'
+WHERE employeeid = 215;
+—-UPDATING THE TABLE ACCOUNT
+UPDATE account
+SET Balance = 55000
+WHERE AccountID = 301;
+—-UPDATING THE TABLE ACCOUNT
+UPDATE account
+SET Status = 'Inactive'
+WHERE AccountID = 305;
+—-UPDATING THE TABLE ACCOUNT
+UPDATE account
+SET InterestRate = '5%', Balance = 85000
+WHERE AccountID = 320;
+—-UPDATING THE TABLE TRANSACTION 
+UPDATE transaction
+SET amount = 5500
+WHERE tarnsaction = 401;
+—-UPDATING THE TABLE TRANSACTION
+UPDATE transaction
+SET status = 'Pending'
+WHERE tarnsaction = 405;
+—-UPDATING THE TABLE TRANSACTION
+UPDATE transaction
+SET mode = 'UPI', description = 'UPI payment'
+WHERE tarnsaction = 420;
+—-UPDATING THE TABLE LOAN
+UPDATE loan
+SET amount = 520000
+WHERE loanid = 501;
+—-UPDATING THE TABLE LOAN
+UPDATE loan
+SET interestrate = 10
+WHERE loanid = 510;
+—-UPDATING THE TABLE LOAN
+UPDATE loan
+SET status = 'Closed'
+WHERE loanid = 520;
+—-UPDATING THE TABLE PAYMENT
+UPDATE payment
+SET amount = 10500
+WHERE paymentid = 601;
+—-UPDATING THE TABLE PAYMENT
+UPDATE payment
+SET mode = 'Debit Card'
+WHERE paymentid = 608;
+—-UPDATING THE TABLE PAYMENT
+UPDATE payment
+SET status = 'Pending', amount = 11000
+WHERE paymentid = 620;
+SET SQL_SAFE_UPDATES = 0;
+—-UPDATING THE TABLE CARD
+UPDATE card
+SET status = 'Blocked'
+WHERE cardid = 701;
+—-UPDATING THE TABLE CARD
+UPDATE card
+SET expirydate = '2030-10-01'
+WHERE cardid = 710;
+—-UPDATING THE TABLE CARD
+UPDATE card
+SET cardtype = 'Debit', status = 'Inactive'
+WHERE cardid = 720;
+
+SET SQL_SAFE_UPDATES = 0;
+—-UPDATING THE TABLE LOGIN
+UPDATE login
+SET password = 'newpass1'
+WHERE loginid = 801;
+—-UPDATING THE TABLE LOGIN
+UPDATE login
+SET lastlogin = '2024-02-15'
+WHERE loginid = 810;
+—-UPDATING THE TABLE LOGIN
+UPDATE login
+SET security = 'Pizza'
+WHERE loginid = 825;
+—-UPDATING THE TABLE LOGIN
+UPDATE audit_log
+SET action = 'User Login'
+WHERE logid = 901;
+—-UPDATING THE TABLE LOGIN
+UPDATE audit_log
+SET deviceinfo = 'Tablet'
+WHERE logid = 910;
+—-UPDATING THE TABLE LOGIN
+UPDATE audit_log
+SET ipaddress = '192.168.10.25'
+WHERE logid = 925;
+
+# alter 
+     -- alter add
+     alter table employee add column employee_info varchar(50) after email; 
+     -- alter modify
+     alter table card modify column cardtype text;  
+     -- alter rename
+     alter table employee rename column salary to stipend;  
+     -- alter drop
+     alter table employee drop employee_info; 
+     create database management;
+# drop 
+drop database management;
+# truncate 
+truncate table payment; 
+# rename
+rename table payment to payment_info;
+# update 
+update audit_log set action = 'Secure Login', deviceinfo = 'Tablet' where logid = 902; 
+# delete 
+delete from card where cvv is null; 
+# distinct
+select distinct loantype from loan;
+
+—- operators
+use bank;
+-- how to set the auto commit off
+set autocommit=0;
+-- creating savepoint
+savepoint ballance;
+update  account set  accounttype= 'current' where balance>500 ;
+-- using rollback to the existing save point
+rollback to ballance;
+
+-- operators
+-- using athematic operators 
+select balance+500 from account where status='Active';
+-- using logical operator to display 
+select *from account where balance>50000;
+
+-- using special operator
+select *FROM account  where  interestrate between 2 and 3 ;
+
+-- aggregation -- applied group by having ,and count functions
+
+use bank;
+ select deviceinfo,count(*) as total_divices from audit_log group by deviceinfo;
+ 
+ 
+ select role ,count(*) from employee group by role;
+ 
+ -- using having & count
+ select name,count(*) from employee group by name ;
+
+ select name ,count(*) from employee group by  name having count(*) order  by count(*) asc;
+ 
+ select salary ,count(*)from employee group by  salary  having count(*) order by  count(*)desc ; 
+
+-- joins-- inner, left, rightjoints, union for relational data
+-- inner join
+select *from account inner join employee on  account.branchid =employee.branchid;
+-- left join
+select *from account left join loan  on account.accounttype=loan.loantype;
+-- right join
+ select *from customer right join account on customer.customerid=account.accountid;
+-- fulljoin 
+select *from customer left join branch on customer.customerid=branch.branchid  union  all select *from customer right join branch on customer.customerid=branch.branchid ;
+-- cross join
+select *from branch cross join  employee ;
+ -- views
+ create  view loandata as select customerid,interestrate, loantype ,amount from loan where amount>1000;
+ drop view loandata;
+ select *from loandata;
+
+
+
+-- data filtering    --applied where, order by, limit and offset
+#where clause:
+select * from customer where city = 'Bangalore';
+select name, salary from employee where salary > 50000; 
+select * from account where AccountType = 'Savings';
+#order by:
+select name, city from customer order by name ASC;
+select name, salary from employee order by salary DESC;
+select AccountID, Balance from account order by Balance DESC;
+#limit:
+select * from customer limit 5;
+select AccountID, Balance from account order by Balance desc limit 3; 
+#offset:
+select * from customer limit 5 offset 5;
+select loanid, amount from loan order by amount desc limit 5;
+-- by using order by set the limit and offset
+select name, salary from employee order by salary desc limit 5 offset 2;
+select AccountID, Balance from account order by Balance desc limit 3 offset 2;
+
+—---user defined function
+-- INSERT CUSTOMER
+DELIMITER //
+CREATE PROCEDURE insert_customer(
+IN cid INT,
+IN cname VARCHAR(90),
+IN ccity VARCHAR(90),
+IN cstate VARCHAR(90)
+)
+BEGIN
+INSERT INTO customer(customerid,name,city,state)
+VALUES(cid,cname,ccity,cstate);
+END //
+DELIMITER ;
+
+CALL insert_customer(31,'Rahul','Chennai','Tamil Nadu');
+
+
+-- SELECT CUSTOMERS
+DELIMITER //
+CREATE PROCEDURE get_customers()
+BEGIN
+SELECT * FROM customer;
+END //
+DELIMITER ;
+
+CALL get_customers();
+
+
+-- UPDATE CUSTOMER
+DELIMITER //
+CREATE PROCEDURE update_customer_city(
+IN cid INT,
+IN newcity VARCHAR(90)
+)
+BEGIN
+UPDATE customer
+SET city = newcity
+WHERE customerid = cid;
+END //
+DELIMITER ;
+
+CALL update_customer_city(1,'Delhi');
+
+
+-- DELETE CUSTOMER
+DELIMITER //
+CREATE PROCEDURE delete_customer(IN cid INT)
+BEGIN
+DELETE FROM customer
+WHERE customerid = cid;
+END //
+DELIMITER ;
+
+CALL delete_customer(31);
+
+
+-- INSERT ACCOUNT
+DELIMITER //
+CREATE PROCEDURE insert_account(
+IN aid INT,
+IN atype VARCHAR(90),
+IN bal INT,
+IN cid INT,
+IN bid INT
+)
+BEGIN
+INSERT INTO account(accountid,accounttype,balance,customerid,branchid)
+VALUES(aid,atype,bal,cid,bid);
+END //
+DELIMITER ;
+
+CALL insert_account(331,'Savings',40000,1,101);
+
+
+-- SELECT CUSTOMER ACCOUNT DETAILS
+DELIMITER //
+CREATE PROCEDURE get_customer_accounts()
+BEGIN
+SELECT c.customerid,c.name,a.accountid,a.accounttype,a.balance
+FROM customer c
+JOIN account a
+ON c.customerid = a.customerid;
+END //
+DELIMITER ;
+
+CALL get_customer_accounts();
+
+
+-- UPDATE ACCOUNT BALANCE
+DELIMITER //
+CREATE PROCEDURE update_balance(
+IN aid INT,
+IN newbal INT
+)
+BEGIN
+UPDATE account
+SET balance = newbal
+WHERE accountid = aid;
+END //
+DELIMITER ;
+
+CALL update_balance(301,60000);
+
+
+-- DELETE ACCOUNT
+DELIMITER //
+CREATE PROCEDURE delete_account(IN aid INT)
+BEGIN
+DELETE FROM account
+WHERE accountid = aid;
+END //
+DELIMITER ;
+
+CALL delete_account(331);
+
+—-- Creating index 
+create index idx_2 on customer(customerid);
+create index idx_3 on branch(branchname);
+create index idx_4 on branch(location);
+create index idx_5 on employee(role);
+create index idx_6 on employee(salary);
+create index idx_7 on account(balance);
+create index idx_a on loan(loantype);
+create index idx_b on payment(amount);
+create index idx_c on card(cvv);
+alter table customer drop index idx_2;
+alter table branch drop index idx_3,drop index idx_4;
+alter table employee drop index idx_5,drop index idx_6;
+alter table account drop index idx_7;
+alter table  loan drop index idx_a;
+alter table payment drop index idx_b;
+alter table card drop index idx_c;
+
+
+
+
+
+—-- creating sub queries
+
+
+SELECT name FROM customer
+WHERE customerid IN (
+    SELECT customerid
+    FROM account
+    WHERE balance > (SELECT AVG(balance) FROM account));
+
+SELECT name from employee 
+WHERE branchid IN (
+    SELECT branchid
+    FROM branch
+    WHERE branchid = 101);
+
+SELECT name FROM customer
+WHERE customerid IN (
+    SELECT customerid
+    FROM loan
+    WHERE loantype = 'Home Loan');
+
+SELECT accountid, balance FROM account
+WHERE balance > (
+    SELECT MIN(balance)
+    FROM account);
+
+SELECT name FROM customer
+WHERE customerid IN (
+    SELECT customerid
+    FROM payment
+    WHERE amount > (
+        SELECT AVG(amount)
+        FROM payment));
+
+SELECT name, salary FROM employee
+WHERE salary = (
+    SELECT MAX(salary)
+    FROM employee);
+
+
+
+
+
+
+
+
+
+
+
+
+5
